@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>쪽지 작성</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<h2>쪽지 작성</h2>
+<div class="container mt-5">
+  <h2>쪽지 보내기</h2>
+  <form th:action="@{/messages/send}" method="post">
+    <input type="hidden" name="receiverId" th:value="${receiver.id}" />
+    <div class="mb-3">
+      <label for="content" class="form-label">내용</label>
+      <textarea class="form-control" id="content" name="content" rows="4" required></textarea>
+    </div>
+    <button type="submit" class="btn btn-primary">보내기</button>
+    <a th:href="@{/messages/box}" class="btn btn-secondary">취소</a>
+  </form>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

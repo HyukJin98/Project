@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+
+<head>
+  <title th:text="#{member.register}">Member Register</title>
+  <link rel="stylesheet" th:href="@{/css/register.css}" />
+<style>
+  /* a 태그 (메인으로 링크) */
+  .btn-main {
+    display: inline-block;
+    background-color: #28a745; /* 푸른색 */
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    width: auto;
+    margin-top: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+  }
+
+  .btn-main .btn-text {
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  .btn-main:hover {
+    background-color: #218838; /* 호버 시 더 어두운 색상 */
+    transform: translateY(-2px); /* 클릭 시 효과를 위한 위로 살짝 이동 */
+  }
+
+  .btn-main:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.7); /* 포커스 시 테두리 효과 */
+  }
+
+  /* input 태그 (제출 버튼) */
+  .btn-submit {
+    background-color: #007bff; /* 파란색 */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+  }
+
+  .btn-submit:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7); /* 파란색 테두리 */
+  }
+
+  .btn-submit:hover {
+    background-color: #0056b3; /* 호버 시 어두운 파란색 */
+    transform: translateY(-2px); /* 클릭 시 효과를 위한 위로 살짝 이동 */
+  }
+</style>
+</head>
+<body>
+<div class="login-container">
+<h2 th:text="#{term}">Terms</h2>
+<p>회원 가입을 원하시면 동의눌러</p>
+<form th:action="@{/register/step2}" method="post">
+  <label>
+    <input type="checkbox" name="agree" value="true">
+    <span th:text="#{term.agree}">I agree to the terms</span>
+  </label>
+  <input type="submit" th:value="#{next.btn}" class="btn-submit">
+  <br>
+  <a th:href="@{/}" class="btn-main">
+    <span class="btn-text">메인으로</span>
+  </a>
+
+</form>
+</div>
+</body>
+</html>

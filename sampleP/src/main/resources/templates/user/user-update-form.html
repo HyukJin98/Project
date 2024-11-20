@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>회원 정보 수정</title>
+  <link rel="stylesheet" th:href="@{/css/profile.css}" />
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      // 폼 제출 시 AJAX 요청 보내기
+      $("form").on("submit", function(event) {
+        event.preventDefault();  // 기본 폼 제출 막기
+
+        var form = $(this);
+        var actionUrl = form.attr("action");  // 폼 액션 URL
+
+        $.ajax({
+          url: actionUrl,  // 폼 액션 URL로 요청
+          type: "POST",  // POST 요청
+          data: form.serialize(),  // 폼 데이터 직렬화
+          success: function(response) {
+            // 성공적으로 수정된 후 알림 메시지 표시
+            alert("회원 정보가 수정되었습니다 다시 로그인 해주세요!");
+            window.location.href = "/";  // 수정 후 프로필 페이지로 리다이렉트
+          },
+          error: function(xhr, status, error) {
+            // 실패 시 오류 메시지 표시
+            alert("정보 수정에 실패했습니다. 다시 시도해 주세요.");
+          }
+        });
+      });
+    });
+  </script>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>회원 정보 수정</h2>
+  <form th:action="@{/user/update/{id}(id=${user.id})}" th:object="${user}" method="post">
+    <p>
+      <label>
+        <span th:text="#{email}">이메일</span>:<br>
+        <input type="text" th:field="*{email}" readonly />
+      </label>
+    </p>
+    <p>
+      <label>
+        <span th:text="#{name}">이름</span>:<br>
+        <input type="text" th:field="*{username}" />
+        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+      </label>
+    </p>
+    <p>
+      <label>
+        <span th:text="#{password}">비밀번호</span>:<br>
+        <input type="password" th:field="*{password}" />
+        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+      </label>
+    </p>
+    <input type="submit" value="수정" />
+  </form>
+</div>
+
+</body>
+</html>

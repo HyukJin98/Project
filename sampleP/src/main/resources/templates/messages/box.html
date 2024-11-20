@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>쪽지함</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <style>
+    .d-inline {
+      margin-right: 5px; /* 버튼 간 간격 조정 */
+    }
+  </style>
+</head>
+<body>
+<div class="container mt-5">
+  <h2>쪽지함</h2>
+  <ul class="nav nav-tabs" id="messageTab" role="tablist">
+    <li class="nav-item">
+      <a class="nav-link" th:classappend="${currentTab == 'received' ? 'active' : ''}"
+         th:href="@{/messages/box(tab='received', page=1)}">받은 쪽지</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" th:classappend="${currentTab == 'sent' ? 'active' : ''}"
+         th:href="@{/messages/box(tab='sent', page=1)}">보낸 쪽지</a>
+    </li>
+  </ul>
+  <div class="tab-content mt-4">
+    <!-- 메시지 리스트 -->
+    <div th:if="${messages != null}">
+      <ul class="list-group">
+        <th:block th:each="message : ${messages.content}">
+          <li class="list-group-item justify-content-between align-items-center">
+            <div>
+              <strong th:text="${currentTab == 'received' ? '보낸 사람:' : '받는 사람:'}"></strong>
+              <span th:text="${currentTab == 'received' ? message.sender.username : message.receiver.username}"></span><br>
+              <strong>내용:</strong> <span th:text="${message.content}"></span><br>
+              <small>보낸 시간: <span th:text="${#temporals.format(message.sentAt, 'yyyy-MM-dd HH:mm')}"></span></small>
+            </div>
+            <th:block th:if="${currentTab == 'received'}">
+
+              <form th:action="@{/messages/new}" method="get" class="d-inline">
+                <input type="hidden" name="receiverId" th:value="${#authentication.name == message.sender.username ? message.receiver.id : message.sender.id}" />
+                <button type="submit" class="btn btn-primary btn-sm">답장</button>
+              </form>
+
+              <form th:action="@{/messages/inbox/delete/{id}(id=${message.id})}" method="post" class="delete-message-form d-inline">
+
+                <button type="button"
+                        class="btn btn-danger btn-sm delete-post-button"
+                        th:data-post-id="${message.id}"
+                        th:data-current-user="${#authentication.name}">
+                  삭제
+                </button>
+              </form>
+            </th:block>
+            <th:block th:if="${currentTab == 'sent'}">
+              <form th:action="@{/messages/outbox/delete/{id}(id=${message.id})}" method="post" class="delete-message-form d-inline">
+                <button type="button"
+                        class="btn btn-danger btn-sm delete-post-button"
+                        th:data-post-id="${message.id}"
+                        th:data-current-user="${#authentication.name}">
+                  삭제
+                </button>
+              </form>
+            </th:block>
+          </li>
+        </th:block>
+      </ul>
+
+      <!-- 페이징 -->
+      <nav th:if="${messages.totalPages > 1}" class="mt-3">
+        <ul class="pagination justify-content-center">
+          <!-- 이전 페이지 -->
+          <li class="page-item" th:classappend="${messages.first ? 'disabled' : ''}">
+            <a class="page-link" th:href="@{/messages/box(tab=${currentTab}, page=${messages.number})}">이전</a>
+          </li>
+
+          <!-- 페이지 번호 -->
+          <th:block th:each="page : ${#numbers.sequence(1, messages.totalPages)}">
+            <li class="page-item" th:classappend="${messages.number + 1 == page ? 'active' : ''}">
+              <a class="page-link" th:href="@{/messages/box(tab=${currentTab}, page=${page})}" th:text="${page}"></a>
+            </li>
+          </th:block>
+
+          <!-- 다음 페이지 -->
+          <li class="page-item" th:classappend="${messages.last ? 'disabled' : ''}">
+            <a class="page-link" th:href="@{/messages/box(tab=${currentTab}, page=${messages.number + 2})}">다음</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+
+    <!-- 메시지가 없는 경우 -->
+    <p th:if="${messages == null || messages.content.empty}" class="text-center mt-4">쪽지가 없습니다.</p>
+  </div>
+  <a th:href="@{/}">메인으로</a>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('.delete-post-button').on('click', function (event) {
+      event.preventDefault(); // 기본 동작 차단
+      event.stopPropagation();
+
+      const messageId = $(this).data('post-id');
+      const currentUser = $(this).data('current-user');
+
+      // 삭제 확인 알림창
+      if (confirm('정말로 이 쪽지를 삭제하시겠습니까?')) {
+        $.ajax({
+          url: `/messages/inbox/delete/${messageId}`, // 요청 URL
+          type: 'POST', // POST 방식
+          data: {
+            '_method': 'delete' // RESTful delete 메서드를 흉내내기 위한 파라미터
+          },
+          success: function (data) {
+            if (data.success) {
+              alert('쪽지가 삭제되었습니다.');
+              window.location.href = '/messages/box'; // 삭제 후 쪽지함으로 리다이렉트
+            } else {
+              alert('삭제에 실패했습니다. 다시 시도해 주세요.');
+            }
+          },
+          error: function (error) {
+            console.error('삭제 중 오류 발생:', error);
+            alert('쪽지 삭제 중 오류가 발생했습니다.');
+          }
+        });
+      }
+    });
+  });
+</script>
+</body>
+</html>

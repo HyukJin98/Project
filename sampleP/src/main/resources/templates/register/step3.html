@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+  <title th:text="#{member.register}">Member Register</title>
+  <link rel="stylesheet" th:href="@{/css/register.css}" />
+  <style>
+    /* login-container 내 p 태그들 간의 간격 추가 */
+    .login-container p {
+      margin-bottom: 20px; /* p 태그들 간에 20px 간격 추가 */
+    }
+
+    /* 버튼 스타일 */
+    .btn-link {
+      text-decoration: none;
+      color: #007bff;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 10px 20px;
+      border-radius: 5px;
+      background-color: transparent;
+      border: 2px solid #007bff;
+      transition: background-color 0.3s, color 0.3s, transform 0.3s;
+    }
+
+    .btn-link:hover {
+      background-color: #007bff;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-link:focus {
+      outline: none;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+    }
+
+  </style>
+</head>
+<body>
+<div class="login-container">
+<p th:text="#{register.done(${registerRequest.name}, ${registerRequest.email})}">
+  Registration completed for [Name] and [Email]
+</p>
+  <p><a th:href="@{/sample/all}" class="btn-link">[첫 화면 이동]</a></p>
+</div>
+</body>
+</html>

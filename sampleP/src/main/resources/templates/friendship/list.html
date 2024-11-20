@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>친구 목록</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<div class="container mt-4">
+  <h1 class="mb-4">친구 목록</h1>
+
+  <h2>대기 중인 친구 요청</h2>
+  <ul class="list-group mb-5">
+    <th:block th:each="request : ${pendingRequests}">
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span th:text="${request.sender.username}"></span>
+        <div>
+          <form th:action="@{/friendship/accept/{friendshipId}(friendshipId=${request.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-success btn-sm">수락</button>
+          </form>
+          <form th:action="@{/friendship/reject/{friendshipId}(friendshipId=${request.id})}" method="post" class="d-inline">
+            <button type="submit" class="btn btn-danger btn-sm">거절</button>
+          </form>
+        </div>
+      </li>
+    </th:block>
+  </ul>
+
+  <h2>친구 목록</h2>
+  <ul class="list-group">
+    <th:block th:each="friend : ${friends}">
+      <!-- 거절된 관계는 제외 -->
+      <li class="list-group-item" th:if="${friend.status != null and friend.status != T(edu.du.samplep.service.FriendshipService.FriendshipStatus).REJECTED}">
+        <!-- 로그인한 사용자가 신청한 사람인지 확인하여 신청한 사람의 이름을 표시 -->
+        <span>
+        <!-- 로그인한 사용자가 신청자라면 -->
+        <span th:text="${#authentication.name == friend.sender.username ? friend.receiver.username : friend.sender.username}"></span>
+      </span>
+
+        <!-- "쪽지 보내기" 버튼 -->
+        <form th:action="@{/messages/new}" method="get" class="d-inline">
+          <input type="hidden" name="receiverId" th:value="${#authentication.name == friend.sender.username ? friend.receiver.id : friend.sender.id}" />
+          <button type="submit" class="btn btn-primary btn-sm">쪽지 보내기</button>
+        </form>
+
+        <form th:action="@{/friendship/delete/{friendshipId}(friendshipId=${friend.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-danger btn-sm">친구 삭제</button>
+        </form>
+      </li>
+    </th:block>
+  </ul>
+
+
+  <div class="mt-4">
+    <a href="/friendship/search" class="btn btn-primary">친구 검색</a>
+    <a href="/" class="btn btn-primary">메인으로</a>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

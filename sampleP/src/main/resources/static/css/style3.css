@@ -1,0 +1,116 @@
+/* Reset basic margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styling */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f7fb;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Register container styling */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Register box styling */
+.register-box {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+/* Heading style */
+.register-box h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Instruction text */
+.register-box p {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* Terms content styling */
+.terms-content {
+    margin-bottom: 20px;
+}
+
+.terms-content label {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+}
+
+.terms-content input[type="checkbox"] {
+    margin-right: 10px;
+    transform: scale(1.2);
+}
+
+/* Submit button styling */
+.buttons .btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.buttons .btn-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Back link styling */
+.back-link {
+    margin-top: 10px;
+}
+
+.back-link .btn-back {
+    text-decoration: none;
+    color: #007bff;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.back-link .btn-back:hover {
+    color: #0056b3;
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .register-box {
+        padding: 20px;
+    }
+
+    .register-box h2 {
+        font-size: 20px;
+    }
+
+    .register-box p {
+        font-size: 14px;
+    }
+}

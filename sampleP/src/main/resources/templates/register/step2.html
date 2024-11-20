@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http//www.thymeleaf.org">
+<head>
+  <title th:text="#{member.register}">Member Register</title>
+  <link rel="stylesheet" th:href="@{/css/register.css}" />
+<style>
+  /* input 태그 (제출 버튼) */
+  .btn-submit {
+    background-color: #007bff; /* 파란색 */
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+  }
+
+  .btn-submit:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7); /* 파란색 테두리 */
+  }
+
+  .btn-submit:hover {
+    background-color: #0056b3; /* 호버 시 어두운 파란색 */
+    transform: translateY(-2px); /* 클릭 시 효과를 위한 위로 살짝 이동 */
+  }
+
+  .btn-submit:active {
+    transform: translateY(2px); /* 클릭 시 눌리는 효과 */
+  }
+</style>
+</head>
+<body>
+<div class="login-container">
+<h2 th:text="#{member.info}">Member Info</h2>
+<form th:action="@{/register/step3}" th:object="${registerRequest}" method="post">
+<!--  <p th:if="${#fields.hasErrors('*')}">-->
+<!--  <div th:each="err : ${#fields.errors('*')}" th:text="${err}"></div>-->
+<!--  </p>-->
+  <p>
+    <label>
+      <span th:text="#{email}">Email</span><br>
+      <input type="text" th:field="*{email}" />
+      <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+    </label>
+  </p>
+  <p>
+    <label>
+      <span th:text="#{name}">Name</span><br>
+      <input type="text" th:field="*{name}" />
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+    </label>
+  </p>
+  <p>
+    <label>
+      <span th:text="#{password}">Password</span><br>
+      <input type="password" th:field="*{password}" />
+      <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+    </label>
+  </p>
+  <input type="submit" th:value="#{register.btn}" class="btn-submit">
+</form>
+</div>
+</body>
+</html>
