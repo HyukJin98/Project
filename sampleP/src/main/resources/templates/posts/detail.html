@@ -2,7 +2,6 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>게시글 상세보기</title>
-    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/style2.css">
     <script src="/js/compressed_script.js"></script>
 
@@ -47,10 +46,12 @@
         </form>
         <button type="button" class="edit-button" onclick="openEditModal()">수정</button>
         <a href="/" class="back-link">목록으로 돌아가기</a>
+
     </div>
 
     <div class="comments-section">
         <div class="comment-list" id="comment-list">
+
             <ul>
                 <li th:each="comment : ${comments}" class="comment-item">
                     <!-- 댓글 내용 -->

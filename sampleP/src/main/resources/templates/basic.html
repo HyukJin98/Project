@@ -110,9 +110,9 @@
                 <li>
                     <a th:href="@{/friendship/list}">친구</a>
                 </li>
-                <li><a href="#">구독<span class="count">57</span></a></li>
-                <li><a href="#">내 소식</a></li>
-                <li><a href="#">채팅</a></li>
+                <li><a href="#" class="alert-link">구독<span class="count">57</span></a></li>
+                <li><a href="#" class="alert-link">내 소식</a></li>
+                <li><a href="#" class="alert-link">채팅</a></li>
             </ul>
         </nav>
         <div class="popular-posts-widget">
@@ -373,6 +373,12 @@
     });
 
 
+    document.querySelectorAll('.alert-link').forEach(link => {
+        link.addEventListener('click', event => {
+            event.preventDefault(); // 기본 동작 막기
+            alert('아직 미구현입니다.');
+        });
+    });
 
 
 

@@ -67,7 +67,7 @@ public class CommentController {
             return "redirect:/posts/"+id;  // 작성한 게시글의 상세 페이지로 리다이렉트
         } else {
             redirectAttributes.addFlashAttribute("warningMessage", "로그인이 필요합니다.");
-            return "redirect:/login";  // 로그인 페이지로 리다이렉트
+            return "redirect:/";  // 로그인 페이지로 리다이렉트
         }
     }
 

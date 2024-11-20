@@ -187,7 +187,7 @@ public class PostController {
     // 게시글 상세보기
     @GetMapping("/posts/{id}")
     public String getPostDetail(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-        if (isAuthenticated()) { // 로그인 여부 확인
+         // 로그인 여부 확인
             Optional<Post> post = postService.getPostById(id);
             if (post.isPresent()) {
                 model.addAttribute("post", post.get());
@@ -200,11 +200,7 @@ public class PostController {
                 return "redirect:/"; // 게시글을 찾을 수 없을 때 리다이렉트
             }
         }
-        else {
-            redirectAttributes.addFlashAttribute("warningMessage", "로그인이 필요합니다.");
-            return "redirect:/"; // 로그인 페이지로 리다이렉트
-        }
-    }
+
 
     // 게시글 삭제 (작성자만 삭제 가능)
     @PostMapping("/posts/{id}")
