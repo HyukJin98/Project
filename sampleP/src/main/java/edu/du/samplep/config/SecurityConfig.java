@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,7 +29,18 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
+    @Autowired
     private UserRepository userRepository;
+
+
+    @Bean
+    public AuthenticationManager authManager(HttpSecurity http, CustomAuthenticationProvider customAuthenticationProvider) throws Exception {
+        return http.getSharedObject(AuthenticationManagerBuilder.class)
+                .authenticationProvider(customAuthenticationProvider) // CustomAuthenticationProvider 등록
+                .build();
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -35,20 +48,20 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
         http
                 .authorizeRequests()
                 .antMatchers("/api/friends/**").authenticated()
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("/manager").hasRole("MANAGER")
                 .antMatchers("/notice/create").hasAuthority("ROLE_MANAGER")
-                .antMatchers("/css/**", "/js/**", "/images/**", "/register/**", "/login", "/basic","/","/posts/**","/user/**","update-success","/comments/**","/assets/**","/upload","/uploads/**","/messages/**","/friendship/**").permitAll() // /basic을 permitAll()로 설정
-                .anyRequest().authenticated() // 그 외의 경로는 인증이 필요하도록 설정
+                .antMatchers("/css/**", "/js/**", "/images/**", "/register/**", "/login", "/basic","/","/posts/**","/user/**","update-success","/comments/**","/assets/**","/upload","/uploads/**","/messages/**","/friendship/**","/login-fail","/login-suspend").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/")
                 .defaultSuccessUrl("/login-success",true)
-                .failureUrl("/login-fail")
+                .failureHandler(customAuthenticationFailureHandler)
                 .permitAll()
                 .and()
                 .logout()
@@ -59,7 +72,9 @@ public class SecurityConfig {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 .and()
-                .csrf().disable();  // CSRF 비활성화
+                .csrf().disable();
+
+        http.authenticationManager(authManager);
 
         return http.build();
     }

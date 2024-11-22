@@ -113,6 +113,7 @@
                 <li><a href="#" class="alert-link">구독<span class="count">57</span></a></li>
                 <li><a href="#" class="alert-link">내 소식</a></li>
                 <li><a href="#" class="alert-link">채팅</a></li>
+                <li sec:authorize="hasAnyRole('MANAGER','ADMIN')"><a th:href="@{/user/user-management}">회원관리</a></li>
             </ul>
         </nav>
         <div class="popular-posts-widget">
@@ -142,6 +143,8 @@
 
         <!-- 공지사항 작성 버튼 (ADMIN, MANAGER 역할만 보임) -->
         <button id="openModalBtn" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">공지사항 작성</button>
+
+
 
 
         <!-- 일반 게시글 섹션 (페이지네이션 적용) -->
@@ -282,6 +285,9 @@
                     <input type="password" id="password" name="password" required><br>
                     <button type="submit">로그인</button>
                 </form>
+                <div th:if="${param.error}">
+                    <p th:text="${param.message}"></p>  <!-- 계정 비활성화 메시지 또는 로그인 실패 메시지 표시 -->
+                </div>
 
                 <!-- 회원가입 링크 -->
                 <div class="register-link">

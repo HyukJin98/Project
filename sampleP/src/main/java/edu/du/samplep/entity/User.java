@@ -4,6 +4,7 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
 
 @Setter
@@ -37,6 +38,14 @@ public class User {
 
     @OneToMany(mappedBy = "receiver")
     private List<Friendship> friendsReceived;  // 내가 받은 친구 요청 목록
+
+    @Column(name = "suspension_end_date")
+    private LocalDate suspensionEndDate;
+
+    // 정지 상태 여부 확인 메서드
+    public boolean isSuspended() {
+        return this.suspensionEndDate != null && LocalDate.now().isBefore(this.suspensionEndDate);
+    }
 
     public User(String email, String username, String password) {
         this.email = email;
