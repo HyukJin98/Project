@@ -39,7 +39,6 @@ public class CommentController {
 
     private final UserRepository userRepository;
 
-    private final CommentRepository commentRepository;
 
     private final ReplyRepository replyRepository;
 

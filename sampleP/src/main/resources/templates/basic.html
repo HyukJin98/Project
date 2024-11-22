@@ -174,24 +174,23 @@
             <p style="font-weight: bold; display: flex; justify-content: center;">게시글이 없습니다.</p>
         </div>
 
-        <!-- 페이지네이션 -->
+        <!-- 페이지네이션 (일반 게시글만 적용) -->
         <div class="pagination">
     <span th:if="${postsPage.hasPrevious()}">
-        <a class="pagination-link first" th:href="@{'/?page=0&size=5'}">처음</a>
-        <a class="pagination-link prev" th:href="@{'/?page=' + ${postsPage.number - 1} + '&size=5'}">이전</a>
+        <a class="pagination-link first" th:href="@{'/?page=0&size=' + ${adjustedPageSize}}">처음</a>
+        <a class="pagination-link prev" th:href="@{'/?page=' + ${postsPage.number - 1} + '&size=' + ${adjustedPageSize}}">이전</a>
     </span>
 
-
             <span th:each="i : ${#numbers.sequence(0, postsPage.totalPages - 1)}">
-        <a class="pagination-link" th:href="@{'/?page=' + ${i} + '&size=5'}" th:text="${i + 1}" th:classappend="${i == postsPage.number} ? 'active' : ''">
-        </a>
+        <a class="pagination-link" th:href="@{'/?page=' + ${i} + '&size=' + ${adjustedPageSize}}" th:text="${i + 1}" th:classappend="${i == postsPage.number} ? 'active' : ''"></a>
     </span>
 
             <span th:if="${postsPage.hasNext()}">
-        <a class="pagination-link next" th:href="@{'/?page=' + ${postsPage.number + 1} + '&size=5'}">다음</a>
-        <a class="pagination-link last" th:href="@{'/?page=' + ${postsPage.totalPages - 1} + '&size=5'}">마지막</a>
+        <a class="pagination-link next" th:href="@{'/?page=' + ${postsPage.number + 1} + '&size=' + ${adjustedPageSize}}">다음</a>
+        <a class="pagination-link last" th:href="@{'/?page=' + ${postsPage.totalPages - 1} + '&size=' + ${adjustedPageSize}}">마지막</a>
     </span>
         </div>
+
         <form th:action="@{/}" method="get" class="search-form">
             <input type="text" id="searchKeyword" name="keyword" th:value="${keyword}" placeholder="검색어를 입력하세요">
             <select id="searchType" name="type">
@@ -314,8 +313,6 @@
         </div>
     </aside>
         </div>
-    </aside>
-</div>
 
 <script>
 

@@ -36,7 +36,7 @@ public class UserDetailService implements UserDetailsService {
 
         // 사용자가 정지된 상태인지 확인
         if (user.getSuspensionEndDate() != null && user.getSuspensionEndDate().isAfter(LocalDate.now())) {
-            throw new UsernameNotFoundException("User is suspended until " + user.getSuspensionEndDate());
+            throw new LockedException("Your account is suspended until " + user.getSuspensionEndDate());
         }
 
         if (user.getRole().contains("SUSPENDED")) {

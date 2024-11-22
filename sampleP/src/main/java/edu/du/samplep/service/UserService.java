@@ -137,6 +137,15 @@ public class UserService {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
+        // 만약 사용자의 정지 기간이 끝났다면 롤을 USER로 변경
+        if (user.getSuspensionEndDate() != null && user.getSuspensionEndDate().isBefore(LocalDate.now())) {
+            user.setRole("USER"); // 롤을 USER로 변경
+            user.setSuspensionEndDate(null); // 정지 종료일을 null로 설정
+            userRepository.save(user);
+            return; // 이미 롤이 바뀌었으면 종료
+        }
+
+        // 정지 기간을 설정하고 유저의 롤을 SUSPENDED로 변경
         LocalDate suspensionEndDate = LocalDate.now().plusDays(days);
         user.setRole("SUSPENDED"); // 정지된 유저 역할
         user.setSuspensionEndDate(suspensionEndDate);

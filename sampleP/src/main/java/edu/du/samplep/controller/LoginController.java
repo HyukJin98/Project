@@ -22,10 +22,7 @@ import java.util.Optional;
 @Controller
 public class LoginController {
 
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    private UserService userService;
+
 
 
     @GetMapping("/login")

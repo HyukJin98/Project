@@ -12,7 +12,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,9 +32,12 @@ public class PostService {
         return postRepository.findAll(Sort.by(Sort.Order.desc("createdAt")));
     }
 
-    public Page<Post> getAllPostsWithPagingAndSorting(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Order.desc("createdAt")));
-        return postRepository.findAll(pageable);
+    public Page<Post> getAllPostsWithPagingAndSorting(int page, int pageSize) {
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Order.desc("createdAt")));
+
+        // 일반 게시글만 페이징 적용
+        Page<Post> posts = postRepository.findByIsNoticeFalse(pageable);
+        return posts;
     }
 
     public Optional<Post> getPostById(Long id) {
@@ -49,6 +51,11 @@ public class PostService {
     }
 
     public Post savePost(Post post) {
+        if (post.getTitle().contains("(공지)")) {
+            post.setNotice(true);
+        } else {
+            post.setNotice(false);
+        }
         return postRepository.save(post);
     }
 
@@ -86,8 +93,11 @@ public class PostService {
 
     public List<Post> getAllNotices() {
         // '공지'라는 단어가 포함된 게시글을 모두 가져옴
-        return postRepository.findByTitleContaining("(공지)");
+        return postRepository.findByIsNoticeTrue();
     }
+
+
+
 
 
     public Page<Post> searchPosts(String keyword, String type, int page, int pageSize) {

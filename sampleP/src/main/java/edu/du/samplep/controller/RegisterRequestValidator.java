@@ -13,8 +13,6 @@ import org.springframework.validation.Validator;
 
 public class RegisterRequestValidator implements Validator {
 
-	@Autowired
-	private UserRepository userRepository;
 
 	private static final String emailRegExp = 
 			"^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" +

@@ -20,4 +20,13 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Page<Post> findByContentContainingIgnoreCase(String content, Pageable pageable);
 
     Page<Post> findByUser_UsernameContainingIgnoreCase(String username, Pageable pageable);
+
+    // 제목에 "(공지)"가 포함된 게시글 가져오기, createdAt으로 정렬
+    Page<Post> findByTitleContaining(String keyword, Pageable pageable);
+
+    // 제목에 "(공지)"와 특정 keyword가 포함된 게시글 가져오기, createdAt으로 정렬
+    Page<Post> findByTitleContainingAndTitleContaining(String firstKeyword, String secondKeyword, Pageable pageable);
+
+    Page<Post> findByIsNoticeFalse(Pageable pageable);
+    List<Post> findByIsNoticeTrue();
 }

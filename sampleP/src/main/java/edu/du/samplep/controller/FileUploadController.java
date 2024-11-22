@@ -1,6 +1,9 @@
 package edu.du.samplep.controller;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,12 +46,16 @@ public class FileUploadController {
         return "파일 업로드 성공: " + file.getOriginalFilename();
     }
 
-    // 업로드한 파일 다운로드 처리
     @GetMapping("/uploads/{fileName}")
-    @ResponseBody
-    public byte[] downloadFile(@PathVariable String fileName) throws IOException {
+    public ResponseEntity<byte[]> downloadFile(@PathVariable String fileName) throws IOException {
         Path path = Paths.get(uploadDir, fileName);
-        return Files.readAllBytes(path);
+        byte[] fileContent = Files.readAllBytes(path);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/octet-stream");
+
+        return new ResponseEntity<>(fileContent, headers, HttpStatus.OK);
     }
 
     // 업로드된 파일 목록 조회 (선택 사항)

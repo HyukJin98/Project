@@ -47,60 +47,60 @@ public class PostController {
     @Autowired
     private FileUploadService fileUploadService;
 
-    @Autowired
-    private FileUploadRepository fileUploadRepository;
 
     // 모든 게시글 목록 조회
     @GetMapping("/")
-    public String getAllPostsWithPaging(
-            Model model,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(value = "keyword", required = false) String keyword,
-            @RequestParam(value = "type", required = false) String type) {
+    public String getAllPostsWithPaging(Model model,
+                                        @RequestParam(defaultValue = "0") int page,
+                                        @RequestParam(value = "keyword", required = false) String keyword,
+                                        @RequestParam(value = "type", required = false) String type) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUserEmail = authentication.getName();
         System.out.println("현재 로그인된 이메일: " + currentUserEmail);
 
-        int pageSize = 6; // 한 페이지에 표시할 게시글 수
+        // 기본 pageSize 설정
+        int pageSize = 5;
         Page<Post> postPage;
 
         List<Post> posts2 = postService.getTopViewedPosts();
         // 검색 조건이 있을 경우 검색된 게시글을 가져오고, 없으면 전체 게시글을 가져옴
         if (keyword != null && type != null && !keyword.isEmpty()) {
-            // 검색 요청 처리
             postPage = postService.searchPosts(keyword, type, page, pageSize);
         } else {
-            // 검색 요청이 없을 때 기본 게시글 조회
             postPage = postService.getAllPostsWithPagingAndSorting(page, pageSize);
         }
 
         // 게시글 리스트 가져오기
         List<Post> posts = postPage.getContent();
 
-        // 공지사항과 일반 게시글을 구분
-        List<Post> notices = posts.stream()
-                .filter(post -> post.getTitle().contains("(공지)"))
-                .collect(Collectors.toList());
-        List<Post> regularPosts = posts.stream()
-                .filter(post -> !post.getTitle().contains("(공지)"))
-                .collect(Collectors.toList());
+        // 공지사항은 페이징 없이 가져오기
+        List<Post> notices = postService.getAllNotices(); // 공지사항 페이징 제거, 전체 공지사항 목록
 
-        // 공지사항은 검색과 무관하게 전체 공지사항 리스트를 표시
-        List<Post> allNotices = postService.getAllNotices();
+        // 공지사항이 있으면 페이지 사이즈를 1 늘려줌
+        int adjustedPageSize = notices.isEmpty() ? pageSize : pageSize + 1;
+
+        // (isNotice == false)인 게시글에만 페이지네이션 적용
+        List<Post> regularPosts = posts.stream()
+                .filter(post -> !post.isNotice())  // isNotice가 false인 게시글만 필터링
+                .collect(Collectors.toList()); // 일반 게시글 리스트
 
         // 모델에 전체 게시글 정보와 구분된 게시글 추가
         model.addAttribute("postsPage", postPage);
-        model.addAttribute("posts", regularPosts);
-        model.addAttribute("notices", allNotices);
+        model.addAttribute("posts", regularPosts);  // 일반 게시글만 페이지네이션 적용
+        model.addAttribute("notices", notices); // 공지사항 리스트
         model.addAttribute("totalPages", postPage.getTotalPages());
         model.addAttribute("currentPage", page);
         model.addAttribute("keyword", keyword);
         model.addAttribute("type", type);
         model.addAttribute("commentService", commentService);
         model.addAttribute("topPosts", posts2);
+        model.addAttribute("adjustedPageSize", adjustedPageSize); // 페이지 사이즈 조정값
 
         return "basic";
     }
+
+
 
 
 

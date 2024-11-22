@@ -26,7 +26,6 @@ import java.util.List;
 public class FriendshipController {
 
     private final FriendshipService friendshipService;
-    private final UserDetailService userDetailService;
     private final UserService userService;
     private final FriendshipRepository friendshipRepository;
 
