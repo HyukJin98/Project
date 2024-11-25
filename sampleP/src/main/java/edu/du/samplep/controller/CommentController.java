@@ -12,7 +12,9 @@ import edu.du.samplep.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -174,15 +176,32 @@ public class CommentController {
 
 
     @PostMapping("/comments/reply/{replyId}/delete")
-    public ResponseEntity<Map<String, Object>> deleteReply(@PathVariable Long replyId, @RequestParam Long postId) {
+    public ResponseEntity<Map<String, Object>> deleteReply(@PathVariable Long replyId, @RequestParam Long postId,
+                                                           @AuthenticationPrincipal UserDetails user) {
         Map<String, Object> response = new HashMap<>();
         try {
+            Optional<Reply> reply = replyRepository.findById(replyId);
             // 댓글 삭제
-            replyRepository.deleteById(replyId);
 
-            // 성공 메시지
-            response.put("success", true);
-            response.put("message", "답글이 성공적으로 삭제되었습니다.");
+            if(reply.isPresent()) {
+                String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+
+                String replyAuthor = reply.get().getUser().getUsername();
+
+
+                if (currentUser.equals(replyAuthor)) {
+                    replyRepository.deleteById(replyId);
+                    response.put("success", true);
+                    response.put("message","성공적으로 삭제되었습니다");
+                }else{
+                    response.put("success", false);
+                    response.put("message","작성자만 삭제할 수 있습니다");
+
+                }
+
+
+
+            }
         } catch (Exception e) {
             // 오류 메시지
             response.put("success", false);

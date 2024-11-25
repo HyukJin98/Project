@@ -4,6 +4,7 @@
 <head>
   <title th:text="#{member.register}">Member Register</title>
   <link rel="stylesheet" th:href="@{/css/register.css}" />
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
 <style>
   /* a 태그 (메인으로 링크) */
   .btn-main {
@@ -64,7 +65,7 @@
 <body>
 <div class="login-container">
 <h2 th:text="#{term}">Terms</h2>
-<p>회원 가입을 원하시면 동의눌러</p>
+<p>회원 가입을 원하시면 약관 동의 해주십시오</p>
 <form th:action="@{/register/step2}" method="post">
   <label>
     <input type="checkbox" name="agree" value="true">

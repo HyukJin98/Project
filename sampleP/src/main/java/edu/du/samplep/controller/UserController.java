@@ -101,6 +101,15 @@ public class UserController {
         return "redirect:/user/user-management";
     }
 
+    @PostMapping("/user/suspend/All/{id}")
+    public String suspendForAllDays(@PathVariable Long id) {
+        // 사용자 상태를 '정지'로 업데이트
+        userService.suspendUser(id, -1); // -1 같은 값은 영구 정지를 나타낼 수 있음
+        return "redirect:/user/user-management";
+    }
+
+
+
     @PostMapping("/user/unsuspend/{id}")
     public String unsuspendUser(@PathVariable Long id) {
         userService.unsuspendUser(id); // 정지 해제 로직

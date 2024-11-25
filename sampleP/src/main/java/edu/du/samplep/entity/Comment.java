@@ -34,6 +34,10 @@ public class Comment {
 
     private LocalDateTime createdAt;
 
+    /*
+ 엔티티가 데이터베이스에 저장되기 전에 호출되는 메서드
+ createdAt 필드에 현재 시간을 자동으로 설정
+*/
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();

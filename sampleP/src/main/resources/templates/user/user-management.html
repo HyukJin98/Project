@@ -23,6 +23,9 @@
       <form th:action="@{/user/suspend/30days/{id}(id=${user.id})}" method="post" style="display:inline;">
         <button type="submit">30일 정지</button>
       </form>
+      <form th:action="@{/user/suspend/All/{id}(id=${user.id})}" method="post" style="display: inline;">
+        <button type="submit">영구정지</button>
+      </form>
       <form th:action="@{/user/unsuspend/{id}(id=${user.id})}" method="post" style="display:inline;"
             th:if="${user.suspensionEndDate != null}">
         <button type="submit">정지 해제</button>

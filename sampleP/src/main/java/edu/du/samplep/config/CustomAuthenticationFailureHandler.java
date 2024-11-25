@@ -47,10 +47,13 @@ public class CustomAuthenticationFailureHandler implements AuthenticationFailure
                     long minutesRemaining = ChronoUnit.MINUTES.between(now, suspensionEndDate) % 60;
                     long secondsRemaining = ChronoUnit.SECONDS.between(now, suspensionEndDate) % 60;
 
-                    errorMessage = String.format("계정이 정지되었습니다. 정지 해제까지 %d일 %d시간 %d분 %d초 남았습니다.",
+                    errorMessage = String.format("계정이 정지되었습니다.\n" +
+                                    "%d일 %d시간 %d분 %d초 남았습니다.",
                             daysRemaining, hoursRemaining, minutesRemaining, secondsRemaining);
+
                 } else {
-                    errorMessage = "계정이 정지되었습니다. 정지 기간이 만료되었습니다.";
+                    errorMessage = "계정이 영구정지되었습니다.\n" 
+                            ;
                 }
             }
         }

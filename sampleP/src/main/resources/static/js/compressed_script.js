@@ -10,19 +10,24 @@ window.onclick = function(event) {
         closeEditModal();
     }
 }
-function openEditCommentModal(commentId, postId, content) {
+function openEditCommentModal(commentId, postId) {
+
     const modal = document.getElementById("editCommentModal");
     document.getElementById("edit-comment-id").value = commentId;
     document.getElementById("edit-post-id").value = postId;
-    document.getElementById("edit-comment-content").value = content;
-    modal.style.display = "block";
-    modal.classList.add("show");
-    modal.style.position = "fixed";
+
+    // 텍스트 영역 초기화 (내용 비우기)
+    document.getElementById("edit-comment-content").value = "";
+
+    // 모달 열기
+    document.getElementById("editCommentModal").style.display = "block";
 }
 function closeEditCommentModal() {
     const modal = document.getElementById("editCommentModal");
+    document.getElementById("edit-comment-content").value = "";
     modal.style.display = "none";
     modal.classList.remove("show");
+
 }
 function updateCommentAjax() {
     const commentId = document.getElementById("edit-comment-id").value;
@@ -111,7 +116,6 @@ function toggleReplyForm(commentId) {
 }
 function openEditReplyModal2(buttonElement) {
     const replyId = buttonElement.getAttribute("data-reply-id");
-    const content = buttonElement.getAttribute("data-reply-content");
     const modalId = `edit-reply-modal2-${replyId}`;
     const contentFieldId = `edit-reply-content2-${replyId}`;
     const modal = document.getElementById(modalId);
@@ -120,7 +124,7 @@ function openEditReplyModal2(buttonElement) {
         console.error(`Modal or content field not found.`);
         return;
     }
-    contentField.value = content;
+    contentField.value = "";
     modal.style.display = 'block';
     modal.classList.add("show");
     modal.style.position = "fixed";

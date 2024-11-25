@@ -51,7 +51,7 @@ public class PostController {
         System.out.println("현재 로그인된 이메일: " + currentUserEmail);
 
         // 기본 pageSize 설정
-        int pageSize = 5;
+        int pageSize = 6;
         Page<Post> postPage;
 
         List<Post> posts2 = postService.getTopViewedPosts();
