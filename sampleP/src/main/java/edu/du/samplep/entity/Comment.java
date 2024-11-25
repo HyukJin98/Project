@@ -1,6 +1,5 @@
 package edu.du.samplep.entity;
 
-import edu.du.samplep.entity.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

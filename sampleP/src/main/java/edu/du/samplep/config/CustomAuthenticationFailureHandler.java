@@ -1,10 +1,7 @@
 package edu.du.samplep.config;
 
-import edu.du.samplep.entity.User;
 import edu.du.samplep.repository.UserRepository;
-import edu.du.samplep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

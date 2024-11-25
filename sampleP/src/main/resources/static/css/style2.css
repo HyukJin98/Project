@@ -1,9 +1,7 @@
 body.post-detail {
-    display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    background-color: #f3f4f6;
     font-family: 'Arial', sans-serif;
     margin: 0;
 }
@@ -13,7 +11,6 @@ body.post-detail {
     background-color: #ffffff;
     padding: 40px;
     border-radius: 10px;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
     margin: 20px;
     box-sizing: border-box;
     max-height: 800px; /* 컨테이너의 최대 높이 */
@@ -43,8 +40,6 @@ body.post-detail {
     line-height: 1.8;
     color: #444;
     padding: 20px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
     border-radius: 8px;
     margin-bottom: 30px;
     box-sizing: border-box;
@@ -52,14 +47,14 @@ body.post-detail {
 
 .post-actions {
     display: flex;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
-    gap: 15px;
+    gap: 300px;
 }
 
 .edit-button, .delete-button, .back-link ,.delete-post-button{
-    padding: 8px 16px; /* 버튼 크기 조정 */
-    font-size: 14px; /* 글자 크기 조정 */
+    padding: 8px 50px; /* 버튼 크기 조정 */
+    font-size: 18px; /* 글자 크기 조정 */
     border: 1px solid #ccc;
     border-radius: 4px;
     cursor: pointer;
@@ -171,8 +166,7 @@ input[type="text"], textarea {
 
 .comments-section {
     margin-top: 40px;
-    padding: 20px;
-    background-color: #f1f1f1; /* 댓글 배경을 게시글과 다르게 설정 */
+    padding: 20px;/* 댓글 배경을 게시글과 다르게 설정 */
     border-radius: 10px;
 }
 
@@ -280,8 +274,7 @@ input[type="text"], textarea {
     }
 }
 
-.reply-item {
-    background-color: #f9f9f9;  /* 답글 배경 색상 */
+.reply-item {  /* 답글 배경 색상 */
     margin-left: 20px;  /* 댓글과 답글의 들여쓰기 */
     padding: 10px;
     border-left: 3px solid #ccc;  /* 답글 구분을 위한 왼쪽 선 */

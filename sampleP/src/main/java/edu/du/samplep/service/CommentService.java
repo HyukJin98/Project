@@ -1,7 +1,6 @@
 package edu.du.samplep.service;
 
 import edu.du.samplep.entity.Comment;
-import edu.du.samplep.entity.Post;
 import edu.du.samplep.entity.Reply;
 import edu.du.samplep.entity.User;
 import edu.du.samplep.repository.CommentRepository;

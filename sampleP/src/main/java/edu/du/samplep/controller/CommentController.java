@@ -4,7 +4,6 @@ import edu.du.samplep.entity.Comment;
 import edu.du.samplep.entity.Post;
 import edu.du.samplep.entity.Reply;
 import edu.du.samplep.entity.User;
-import edu.du.samplep.repository.CommentRepository;
 import edu.du.samplep.repository.ReplyRepository;
 import edu.du.samplep.repository.UserRepository;
 import edu.du.samplep.service.CommentService;

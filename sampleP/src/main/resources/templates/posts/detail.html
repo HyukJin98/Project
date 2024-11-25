@@ -17,7 +17,7 @@
         <p class="post-author" th:text="'작성자: ' + ${post.user.username}">작성자</p>
         <p class="post-date" th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
     </div>
-    <div class="post-content" th:text="${post.content}">
+    <div class="post-content" th:utext="${postContent}" style="white-space: pre-wrap; word-wrap: break-word;"></div>
 
     </div>
     <!-- 첨부파일 처리 -->
@@ -56,7 +56,7 @@
                 <li th:each="comment : ${comments}" class="comment-item">
                     <!-- 댓글 내용 -->
                     <p class="comment-author" th:text="${comment.user != null && comment.user.username != null ? comment.user.username : '알 수 없음'}"></p>
-                    <p class="comment-content" th:text="${comment.content}"></p>
+                    <p class="comment-content" th:utext="${comment.content}"></p>
                     <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
 
                     <!-- 댓글 수정, 삭제 -->
@@ -99,7 +99,7 @@
                             <li th:each="reply : ${comment.replies}" class="reply-item">
                                 <div class="reply-content">
                                     <p class="comment-author" th:text="${reply.user != null && reply.user.username != null ? reply.user.username : '알 수 없음'}"></p>
-                                    <p class="comment-content" th:text="${reply.content}"></p>
+                                    <p class="comment-content" th:utext="${reply.content}"></p>
                                     <p class="comment-date" th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
                                 </div>
 

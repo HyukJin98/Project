@@ -1,8 +1,6 @@
 package edu.du.samplep.entity;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;

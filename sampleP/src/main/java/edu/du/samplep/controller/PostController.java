@@ -1,20 +1,13 @@
 package edu.du.samplep.controller;
 
-import edu.du.samplep.entity.Comment;
-import edu.du.samplep.entity.FileUpload;
-import edu.du.samplep.entity.Post;
-import edu.du.samplep.entity.User;
-import edu.du.samplep.repository.FileUploadRepository;
+import edu.du.samplep.entity.*;
+import edu.du.samplep.repository.CommentRepository;
 import edu.du.samplep.service.CommentService;
 import edu.du.samplep.service.FileUploadService;
 import edu.du.samplep.service.PostService;
 import edu.du.samplep.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -24,11 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -47,6 +36,8 @@ public class PostController {
     @Autowired
     private FileUploadService fileUploadService;
 
+    @Autowired
+    private CommentRepository commentRepository;
 
     // 모든 게시글 목록 조회
     @GetMapping("/")
@@ -187,19 +178,37 @@ public class PostController {
     // 게시글 상세보기
     @GetMapping("/posts/{id}")
     public String getPostDetail(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
-         // 로그인 여부 확인
-            Optional<Post> post = postService.getPostById(id);
-            if (post.isPresent()) {
-                model.addAttribute("post", post.get());
-                model.addAttribute("comments", commentService.getCommentsByPostId(id));
-                model.addAttribute("postId", id);
-                return "posts/detail";
+        Optional<Post> post = postService.getPostById(id);
+
+        if (post.isPresent()) {
+            // 줄바꿈을 <br>로 변환 (게시글 내용)
+            String contentWithBr = post.get().getContent().replace("\n", "<br/>");
+            model.addAttribute("post", post.get());
+            model.addAttribute("postContent", contentWithBr); // 변환된 content 전달
+
+            // 댓글 및 답글 내용 줄바꿈 처리
+            List<Comment> comments = commentService.getCommentsByPostId(id);
+            for (Comment comment : comments) {
+                String commentContentWithBr = comment.getContent().replace("\n", "<br/>");
+                comment.setContent(commentContentWithBr); // 댓글 내용 변환
+
+                // 답글 내용 변환
+                List<Reply> replies = comment.getReplies();
+                for (Reply reply : replies) {
+                    String replyContentWithBr = reply.getContent().replace("\n", "<br/>");
+                    reply.setContent(replyContentWithBr); // 답글 내용 변환
+                }
             }
-            else {
-                redirectAttributes.addFlashAttribute("warningMessage", "게시글을 찾을 수 없습니다.");
-                return "redirect:/"; // 게시글을 찾을 수 없을 때 리다이렉트
-            }
+            model.addAttribute("comments", comments); // 변환된 댓글들 및 답글들 전달
+
+            model.addAttribute("postId", id);
+            return "posts/detail";
+        } else {
+            redirectAttributes.addFlashAttribute("warningMessage", "게시글을 찾을 수 없습니다.");
+            return "redirect:/"; // 게시글을 찾을 수 없을 때 리다이렉트
         }
+    }
+
 
 
     // 게시글 삭제 (작성자만 삭제 가능)

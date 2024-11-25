@@ -3,10 +3,7 @@ package edu.du.samplep.controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import edu.du.samplep.repository.UserRepository;
 import edu.du.samplep.service.RegisterRequest;
-import edu.du.samplep.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;

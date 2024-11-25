@@ -5,16 +5,23 @@
   box-sizing: border-box;
 }
 
+@font-face {
+  font-family: 'MyFont';
+  src: url('/font/Poppins-Thin.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f9f9f9;
-  color: #333;
+  background-image: url("/images/치이카와.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: 'MyFont', sans-serif;
   margin: 0;
   padding: 0;
   overflow: hidden; /* 기본적으로 스크롤 없애기 */
 }
 
-/* 전체 레이아웃 */
 /* 전체 레이아웃 */
 .container {
   display: flex;
@@ -23,6 +30,7 @@ body {
   padding: 20px;
   width: 100%; /* 화면 크기에 맞춰 너비 100% */
   min-width: 1200px; /* 최소 너비 고정 (필요시) */
+  font-family: 'MyFont', sans-serif;
 }
 
 
@@ -39,7 +47,7 @@ body {
 
 .sidebar a {
   display: block;
-  font-size: 1.5em;
+  font-size: 1.0em;
   font-weight: bold;
   text-decoration: none;
   color: #333;
