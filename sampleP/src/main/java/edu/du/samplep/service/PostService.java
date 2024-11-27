@@ -5,6 +5,7 @@ import edu.du.samplep.entity.Post;
 import edu.du.samplep.repository.FileUploadRepository;
 import edu.du.samplep.repository.PostRepository;
 import edu.du.samplep.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,17 +17,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class PostService {
 
-    @Autowired
-    private PostRepository postRepository;
 
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private FileUploadRepository fileUploadRepository;
+    private final PostRepository postRepository;
+
+
+
+    private final FileUploadRepository fileUploadRepository;
 
     public List<Post> getAllPosts() {
         return postRepository.findAll(Sort.by(Sort.Order.desc("createdAt")));

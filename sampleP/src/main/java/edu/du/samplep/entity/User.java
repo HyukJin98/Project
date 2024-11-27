@@ -40,6 +40,8 @@ public class User {
     @Column(name = "suspension_end_date")
     private LocalDate suspensionEndDate;
 
+
+
     // 정지 상태 여부 확인 메서드
     public boolean isSuspended() {
         return this.suspensionEndDate != null && LocalDate.now().isBefore(this.suspensionEndDate);
@@ -58,4 +60,6 @@ public class User {
     public String getName() {
         return username;
     }
+
+
 }

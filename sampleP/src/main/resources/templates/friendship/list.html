@@ -32,8 +32,8 @@
     <th:block th:each="friend : ${friends}">
       <!-- 거절된 관계는 제외 -->
       <li class="list-group-item"
-          th:if="${friend.status != null and friend.status != T(edu.du.samplep.service.FriendshipService.FriendshipStatus).REJECTED}">
-        <!-- 로그인한 사용자가 신청한 사람인지 확인하여 신청한 사람의 이름을 표시 -->
+          th:if="${friend.status != null and friend.status.toString() != 'REJECTED'}">
+      <!-- 로그인한 사용자가 신청한 사람인지 확인하여 신청한 사람의 이름을 표시 -->
         <span>
     <span th:text="${#authentication.name == friend.sender.username ? friend.receiver.username : friend.sender.username}"></span>
   </span>

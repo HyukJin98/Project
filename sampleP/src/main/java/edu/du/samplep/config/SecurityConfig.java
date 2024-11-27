@@ -51,7 +51,7 @@ public class SecurityConfig {
                 .antMatchers("/user").hasRole("USER")
                 .antMatchers("/manager").hasRole("MANAGER")
                 .antMatchers("/notice/create").hasAuthority("ROLE_MANAGER")
-                .antMatchers("/css/**", "/js/**", "/images/**", "/register/**", "/login", "/basic","/","/posts/**","/user/**","update-success","/comments/**","/assets/**","/upload","/uploads/**","/messages/**","/friendship/**","/login-fail","/login-suspend").permitAll()
+                .antMatchers("/css/**", "/js/**", "/images/**", "/register/**", "/login", "/basic","/","/posts/**","/user/**","update-success","/comments/**","/assets/**","/upload","/uploads/**","/messages/**","/friendship/**","/login-fail","/login-suspend","/inquiry/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()

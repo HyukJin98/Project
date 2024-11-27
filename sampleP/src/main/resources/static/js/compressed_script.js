@@ -232,7 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const currentUser = button.getAttribute('data-current-user');
 
             if (confirm('정말로 게시글을 삭제하시겠습니까?')) {
-                if (postAuthor !== currentUser) {
+                if (postAuthor !== currentUser && currentUser !== '관리자') {
                     alert('작성자만 게시글을 삭제할 수 있습니다.');
                     return;
                 }

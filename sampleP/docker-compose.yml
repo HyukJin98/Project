@@ -3,7 +3,7 @@ services:
   app:
     build: .
     ports:
-      - "8882:8882"
+      - "8883:8883"
     depends_on:
       - db
     environment:
@@ -18,4 +18,4 @@ services:
       MYSQL_ROOT_PASSWORD: mysql
       MYSQL_DATABASE: jpa5
     ports:
-      - "3307:3306"
+      - "3309:3306"

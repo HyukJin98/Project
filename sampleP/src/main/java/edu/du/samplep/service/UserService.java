@@ -1,11 +1,13 @@
 package edu.du.samplep.service;
 
+import edu.du.samplep.entity.Friendship;
 import edu.du.samplep.entity.User;
 import edu.du.samplep.repository.FriendshipRepository;
 import edu.du.samplep.repository.PostRepository;
 import edu.du.samplep.repository.UserRepository;
 import groovyjarjarpicocli.CommandLine;
 import javassist.bytecode.DuplicateMemberException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -19,18 +21,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    UserRepository userRepository;
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
 
-    @Autowired
-    PostRepository postRepository;
-    @Autowired
-    private FriendshipRepository friendshipRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
 
     public User updateUser(Long id, User userDetails) {
@@ -84,12 +82,12 @@ public class UserService {
 
     public Long register(RegisterRequest req) throws javassist.bytecode.DuplicateMemberException {
         Optional<User> user = userRepository.findByEmail(req.getEmail());
-        User user2 = userRepository.findByUsername(req.getName());
+        Optional<User> user2 = userRepository.findOptionalByUsername(req.getName());
         if (user.isPresent()) {
             throw new DuplicateMemberException("Email already exists: " + req.getEmail());
         }
 
-        if(user2.getName().equals(req.getName())) {
+        if (user2.isPresent()) {
             throw new CommandLine.DuplicateNameException("Name already exists: " + req.getName());
         }
 
@@ -102,6 +100,9 @@ public class UserService {
 
         userRepository.save(newUser);
         System.out.println("====> Registered User: " + newUser);
+
+
+
         return newUser.getId();
     }
 

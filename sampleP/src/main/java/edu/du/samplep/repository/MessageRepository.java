@@ -24,4 +24,6 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 
     Page<Message> findByReceiver(User receiver, Pageable pageable);
     Page<Message> findBySender(User sender, Pageable pageable);
+
+    int countByReceiver_Id(Long receiverId);
 }

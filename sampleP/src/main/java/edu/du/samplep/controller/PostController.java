@@ -227,7 +227,7 @@ public class PostController {
                 String postAuthor = post.get().getUser().getUsername();
 
                 // 현재 사용자와 작성자 비교
-                if (postAuthor.equals(currentUser)) {
+                if (postAuthor.equals(currentUser)  || "관리자".equals(currentUser)) {
                     postService.deletePost(id);
                     response.put("success", true);
                     response.put("message", "성공적으로 삭제되었습니다.");

@@ -2,6 +2,7 @@ package edu.du.samplep.controller;
 
 import edu.du.samplep.entity.Message;
 import edu.du.samplep.entity.User;
+import edu.du.samplep.repository.MessageRepository;
 import edu.du.samplep.service.MessageService;
 import edu.du.samplep.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.sound.midi.Receiver;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,6 +27,7 @@ public class MessageController {
 
     private final MessageService messageService;
     private final UserService userService;
+    private final MessageRepository messageRepository;
 
     // 메시지 전송
     @PostMapping("/send")
@@ -63,6 +66,9 @@ public class MessageController {
            if (userDetails == null) {
                throw new IllegalArgumentException("로그인된 사용자가 없습니다.");
            }
+
+
+
 
            User loggedInUser = userService.findByUsername(userDetails.getUsername());
 
@@ -121,9 +127,12 @@ public class MessageController {
         return response;
     }
 
+
     // 로그인 여부 확인
     private boolean isAuthenticated() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null && authentication.isAuthenticated() && !(authentication.getName().equals("anonymousUser"));
     }
+
+
 }

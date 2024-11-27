@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class MessageService {
 
     private final MessageRepository messageRepository;
+    private final UserService userService;
 
     public Page<Message> getReceivedMessages(User receiver, int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "sentAt"));
@@ -45,4 +46,25 @@ public class MessageService {
                 .orElseThrow(() -> new IllegalArgumentException("메시지를 찾을 수 없습니다."));
         messageRepository.delete(message);
     }
+
+    // 고객센터로 메시지 전송
+    public Message sendMessageToAdmin(User sender, String content) {
+        // 관리자 계정을 찾아서 수신자로 지정
+        User admin = userService.findByUsername("관리자");
+
+        if (admin == null) {
+            throw new IllegalArgumentException("관리자 계정을 찾을 수 없습니다.");
+        }
+
+        // 메시지 생성 및 저장
+        Message message = Message.builder()
+                .sender(sender)
+                .receiver(admin)
+                .content(content)
+                .isRead(false)
+                .build();
+
+        return messageRepository.save(message);
+    }
+
 }
