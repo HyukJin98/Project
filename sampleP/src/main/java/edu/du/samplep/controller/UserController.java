@@ -39,7 +39,7 @@ public class UserController {
 
         User user = userRepository.findByUsername(currentUsername);
         model.addAttribute("user", user);
-        return "/user/user-profile";  // 프로필 페이지
+        return "user/user-profile";  // 프로필 페이지
     }
 
     // 사용자 정보 수정 폼
@@ -48,7 +48,7 @@ public class UserController {
         User user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid user Id:" + id));
         model.addAttribute("user", user);
 
-        return "/user/user-update-form";  // 수정 폼 페이지
+        return "user/user-update-form";  // 수정 폼 페이지
     }
 
     // 사용자 정보 수정 처리
@@ -84,7 +84,7 @@ public class UserController {
     @GetMapping("/user/user-management")
     public String showUserManagement(Model model) {
         model.addAttribute("users", userService.getAllUsers());
-        return "/user/user-management";
+        return "user/user-management";
     }
 
     // 7일 정지 처리

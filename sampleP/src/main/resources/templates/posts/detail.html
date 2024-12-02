@@ -141,15 +141,14 @@
                                     <div class="modal-content2">
                                         <span class="close-button2" th:onclick="|closeEditReplyModal2(${reply.id})|">&times;</span>
                                         <h3>답글 수정</h3>
-                                        <form method="post" th:action="@{/comments/reply/{replyId}(replyId=${reply.id})}" th:id="'edit-reply-form2-' + ${reply.id}">
+                                        <form th:action="@{/comments/reply/{replyId}/edit(replyId=${reply.id})}" th:id="'edit-reply-form2-' + ${reply.id}" method="post">
                                             <input type="hidden" name="postId" th:value="${post.id}">
                                             <input type="hidden" name="replyId" th:value="${reply.id}">
-                                            <!-- 수정된 textarea -->
                                             <textarea name="content"
                                                       th:id="'edit-reply-content2-' + ${reply.id}"
                                                       required
                                                       th:text="${reply.content}"></textarea>
-                                            <button type="submit" class="save-reply-button2">저장</button>
+                                            <button type="button" class="save-reply-button2" th:onclick="'saveReply2(' + ${reply.id} + ')'">저장</button>
                                             <button type="button" class="cancel-reply-button2" th:onclick="|closeEditReplyModal2(${reply.id})|">취소</button>
                                         </form>
                                     </div>

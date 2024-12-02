@@ -10,6 +10,7 @@ import edu.du.samplep.service.CommentService;
 import edu.du.samplep.service.PostService;
 import edu.du.samplep.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -212,23 +213,48 @@ public class CommentController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/comments/reply/{replyId}")
-    public String editReply(@PathVariable Long replyId,
-                            @RequestParam String content,
-                            @RequestParam Long postId) {
-        try {
-            Reply reply = replyRepository.findById(replyId)
-                    .orElseThrow(() -> new IllegalArgumentException("답글을 찾을 수 없습니다."));
-            reply.setContent(content);
-            replyRepository.save(reply);
+    @PostMapping("/comments/reply/{replyId}/edit")
+    public ResponseEntity<Map<String, Object>> editReply(
+            @PathVariable Long replyId,
+            @RequestParam Long postId,
+            @RequestParam String content,
+            @AuthenticationPrincipal UserDetails user) {
 
-            // 리다이렉트 URL에 메시지를 쿼리 파라미터로 추가
-            return "redirect:/posts/" + postId + "?message=" + URLEncoder.encode("답글이 수정되었습니다.", StandardCharsets.UTF_8);
+        Map<String, Object> response = new HashMap<>();
+        try {
+            // 댓글 조회
+            Optional<Reply> optionalReply = replyRepository.findById(replyId);
+
+            if (optionalReply.isPresent()) {
+                Reply reply = optionalReply.get();
+                String currentUser = SecurityContextHolder.getContext().getAuthentication().getName();
+                String replyAuthor = reply.getUser().getUsername();
+
+                // 작성자 확인
+                if (currentUser.equals(replyAuthor)) {
+                    // 내용 수정
+                    reply.setContent(content);
+                    replyRepository.save(reply);
+
+                    response.put("success", true);
+                    response.put("message", "답글이 성공적으로 수정되었습니다.");
+                } else {
+                    response.put("success", false);
+                    response.put("message", "작성자만 답글을 수정할 수 있습니다.");
+                }
+            } else {
+                response.put("success", false);
+                response.put("message", "답글을 찾을 수 없습니다.");
+            }
         } catch (Exception e) {
-            // 실패한 경우도 쿼리 파라미터로 메시지 전달
-            return "redirect:/posts/" + postId + "?message=" + URLEncoder.encode("답글 수정에 실패했습니다.", StandardCharsets.UTF_8);
+            e.printStackTrace();
+            response.put("success", false);
+            response.put("message", "답글 수정 중 오류가 발생했습니다.");
         }
+
+        return ResponseEntity.ok(response);
     }
+
 
 
     // 로그인 여부 확인

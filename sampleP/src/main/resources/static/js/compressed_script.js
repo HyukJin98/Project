@@ -132,31 +132,30 @@ function openEditReplyModal2(buttonElement) {
 function saveReply2(replyId) {
     const content = document.getElementById(`edit-reply-content2-${replyId}`).value;
     const postId = document.querySelector(`#edit-reply-form2-${replyId} input[name='postId']`).value;
-    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-    fetch(`/comments/reply/${replyId}`, {
+
+    fetch(`/comments/reply/${replyId}/edit`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            'X-CSRF-TOKEN': csrfToken
+            'Content-Type': 'application/x-www-form-urlencoded'
         },
         body: new URLSearchParams({
             'postId': postId,
             'content': content
         })
     })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            window.location.replace(`/posts/${postId}?message=${encodeURIComponent(data.message)}`);
-        } else {
-            alert(data.message);
-        }
-    })
-    .catch(error => {
-        console.error('수정 중 오류 발생:', error);
-        alert('답글 수정 중 오류가 발생했습니다.');
-    });
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert(data.message);
+                window.location.replace(`/posts/${postId}?message=${encodeURIComponent(data.message)}`);
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('수정 중 오류 발생:', error);
+            alert('답글 수정 중 오류가 발생했습니다.');
+        });
 }
 function closeEditReplyModal2(replyId) {
     const modal = document.getElementById(`edit-reply-modal2-${replyId}`);
