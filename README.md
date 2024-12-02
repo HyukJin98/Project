@@ -9,5 +9,5 @@
 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=15&pause=1000&color=000000&width=435&lines=Language+-+JAVA%2CJavaScript%2CHTML%2CCSS" alt="Typing SVG" /></a>
 
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=15&pause=1000&color=000000&width=435&lines=Framework%2BLibrary+-+Spring+Boot%2C+Thymeleaf%2C+JPA%2C+Hibernate" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=15&duration=6000&pause=1000&color=000000&width=435&lines=Framework%2BLibrary+-+Spring+Boot%2C+Thymeleaf%2C+JPA;%2C+Hibernate" alt="Typing SVG" /></a>
 
