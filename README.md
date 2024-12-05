@@ -18,5 +18,8 @@
           <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=flat-square&logo=Spring Boot&logoColor=white">
           </div>
     </div>
- 
-    
+ <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;">  </h2>  
+  <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 제작 </h2> <br>
+  <h4>개발자 : 이혁진</h4>
+  <h4>제작기간 : 2024.11.01~2024.12.01</h4>
+  <h4>개요 :  커뮤니티 웹사이트 개발 프로젝트로, 회원가입/로그인, 게시판, 댓글 기능, 쪽지 발송, 파일 업로드 등 커뮤니티 운영에 필요한 핵심 기능을 구현. Spring Boot 기반의 Thymeleaf를 사용해 웹 화면을 개발.</h4>
