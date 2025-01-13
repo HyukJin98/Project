@@ -25,4 +25,7 @@
   <h4>개요 :  커뮤니티 웹사이트 개발 프로젝트로, 회원가입/로그인, 게시판, 댓글 기능, 쪽지 발송, 파일 업로드 등 커뮤니티 운영에 필요한 핵심 기능을 구현. Spring Boot 기반의 Thymeleaf를 사용해 웹 화면을 개발.</h4>
 
 
+<h1>ERD</h1>
+
+
 ![erd](https://github.com/user-attachments/assets/ec712ceb-fdff-4150-9eab-2317ed5db322)
