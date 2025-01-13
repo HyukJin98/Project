@@ -23,4 +23,4 @@
   <h4>개발자 : 이혁진</h4>
   <h4>제작기간 : 2024.11.01~2024.12.01</h4>
   <h4>개요 :  커뮤니티 웹사이트 개발 프로젝트로, 회원가입/로그인, 게시판, 댓글 기능, 쪽지 발송, 파일 업로드 등 커뮤니티 운영에 필요한 핵심 기능을 구현. Spring Boot 기반의 Thymeleaf를 사용해 웹 화면을 개발.</h4>
-![erd 이혁진](https://github.com/user-attachments/assets/74e4eff7-4d59-4658-9101-25ad48fd35db)
+![myerd](./images/erd.jpg)
