@@ -72,4 +72,18 @@
   </li>
 </ul>
 
+<h1>트러블 슈팅</h1>
+<ul>
+    <li>
+        <strong>데이터가 많아질수록 속도가 느려짐</strong><br>
+        처음에는 <code>findAll()</code>로 전체 게시글을 불러왔는데, 게시글이 많아지면서 페이지 로딩이 느려짐<br>
+        <strong>해결법:</strong> 페이징 처리 적용하기 (<code>JPA Pageable</code> 활용)
+    </li>
+    <li>
+        <strong>UI/UX가 생각처럼 나오지 않음</strong><br>
+        Figma 같은 디자인 툴 없이 바로 개발을 시작하여 네이버 카페 같은 디자인을 만들고 싶었지만 이상하게 나옴<br>
+        <strong>해결법:</strong> 개발자 도구 (<code>F12</code>)를 활용하여 네이버 카페의 코드를 참고하면서 직접 수정하기
+    </li>
+</ul>
+
 
