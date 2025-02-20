@@ -1,0 +1,132 @@
+/* 기본적인 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* 로그인 컨테이너 스타일 */
+.login-container {
+    width: 90%;
+    max-width: 400px;
+    background-color: #fff;
+    padding: 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: center;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="email"] {
+    width: 100%;
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    color: #333;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="email"]:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+/* 제목 스타일 */
+h2 {
+    font-size: 1.8em;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 설명 문구 스타일 */
+p {
+    font-size: 1em;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+/* 체크박스 라벨 스타일 */
+label {
+    display: -webkit-inline-box;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 1em;
+    color: #333;
+}
+
+input[type="checkbox"] {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* 제출 버튼 스타일 */
+.btn-submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.btn-submit:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.7);
+}
+
+.btn-submit:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+/* 메인으로 돌아가기 버튼 스타일 */
+.btn-main {
+    display: inline-block;
+    background-color: #28a745;
+    color: white;
+    text-align: center;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s ease;
+}
+
+.btn-main .btn-text {
+    display: block;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.btn-main:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-main:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.7);
+}

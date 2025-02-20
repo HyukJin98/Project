@@ -1,0 +1,141 @@
+/* 기본 스타일 */
+body {
+    font-family: 'Nanum Gothic', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* 공통 컨테이너 스타일 */
+.profile-container,.login-container {
+    width: 400px;
+    padding: 20px 30px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* 헤더 스타일 */
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* 프로필 페이지 전용 스타일 */
+.profile-info {
+    margin: 20px 0;
+    text-align: left;
+}
+
+.profile-info p {
+    margin: 10px 0;
+    font-size: 16px;
+}
+
+.profile-info strong {
+    color: #555;
+}
+
+.update-profile-link {
+    display: block;
+    margin: 10px 0;
+}
+
+/* 버튼 스타일 */
+button,
+input[type="submit"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #007bff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 10px;
+}
+
+button:hover,
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+button:active,
+input[type="submit"]:active {
+    background-color: #3e8e41;
+}
+
+button + button {
+    background-color: #007bff;
+}
+
+button + button:hover {
+    background-color: #0069d9;
+}
+
+button + button:active {
+    background-color: #0056b3;
+}
+
+/* 회원 정보 수정 페이지 전용 스타일 */
+form {
+    margin-top: 20px;
+}
+
+/* 폼 요소 스타일 */
+p {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"] {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: border-color 0.3s;
+}
+
+/* 읽기 전용 필드 스타일 */
+input[readonly] {
+    background-color: #e9ecef;
+}
+
+/* 입력 필드 포커스 스타일 */
+input[type="text"]:focus,
+input[type="password"]:focus {
+    border-color: #4caf50;
+}
+
+/* 오류 메시지 스타일 */
+div[th\\:if] {
+    color: #e74c3c;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+    .container {
+        width: 90%;
+        padding: 20px;
+    }
+}

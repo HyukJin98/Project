@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>게시글 상세보기</title>
+    <link rel="stylesheet" href="/css/style2.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700&display=swap" rel="stylesheet">
+    <script src="/js/compressed_script.js"></script>
+
+</head>
+
+<body class="post-detail">
+
+
+<div class="post-container">
+    <h1 class="post-title" th:text="${post.title}">게시글 제목</h1>
+
+    <div class="post-meta">
+        <p class="post-author" th:text="'작성자: ' + ${post.user.username}">작성자</p>
+        <p class="post-date" th:text="'작성일: ' + ${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}">작성일</p>
+    </div>
+    <div class="post-content" th:utext="${postContent}" style="white-space: pre-wrap; word-wrap: break-word;"></div>
+
+    </div>
+    <!-- 첨부파일 처리 -->
+    <div class="post-files" th:if="${post.files != null and !#lists.isEmpty(post.files)}">
+        <ul style="list-style-type: none;">
+            <li th:each="file : ${post.files}">
+                <!-- 이미지 파일일 경우 바로 표시, 그 외 파일은 다운로드 링크 제공 -->
+                <span th:if="${#strings.endsWith(file.fileName, '.jpg') or #strings.endsWith(file.fileName, '.jpeg') or #strings.endsWith(file.fileName, '.png') or #strings.endsWith(file.fileName, '.gif')}">
+                <img th:src="@{'/uploads/' + ${file.fileName}}" alt="첨부 이미지" style="max-width: 100%; height: auto;"/>
+            </span>
+                <span th:unless="${#strings.endsWith(file.fileName, '.jpg') or #strings.endsWith(file.fileName, '.jpeg') or #strings.endsWith(file.fileName, '.png') or #strings.endsWith(file.fileName, '.gif')}">
+                <a th:href="@{'/uploads/' + ${file.fileName}}" th:text="${file.fileName}">첨부파일</a>
+            </span>
+            </li>
+        </ul>
+    </div>
+
+
+<div class="post-actions">
+    <!-- 게시글 제목에 "(공지)"가 포함되지 않거나, 사용자가 관리자일 경우 삭제 및 수정 버튼 보이기 -->
+    <div th:if="${(post.title.contains('(공지)') and #authentication.name == '관리자') or
+         (!post.title.contains('(공지)') and (post.user.username == #authentication.name or #authentication.name == '관리자'))}">
+        <form th:action="@{/posts/{id}(id=${post.id})}" method="post" class="delete-form">
+            <input type="hidden" name="_method" value="delete" />
+            <button type="submit" class="delete-post-button"
+                    th:attr="data-post-id=${post.id},
+                    data-post-author=${post.user.username},
+                    data-current-user=${#authentication.name}">
+                삭제
+            </button>
+        </form>
+    </div>
+
+    <div th:if="${(post.title.contains('(공지)') and #authentication.name == '관리자') or
+         (!post.title.contains('(공지)') and (post.user.username == #authentication.name or #authentication.name == '관리자'))}">
+        <button type="button" class="edit-button" onclick="openEditModal()">수정</button>
+    </div>
+
+    <!-- 목록으로 돌아가기 링크 -->
+    <a href="/" class="back-link">목록으로 돌아가기</a>
+</div>
+
+    <div class="comments-section">
+        <div class="comment-list" id="comment-list">
+
+            <ul>
+                <li th:each="comment : ${comments}" class="comment-item">
+                    <!-- 댓글 내용 -->
+                    <p class="comment-author" th:text="${comment.user != null && comment.user.username != null ? comment.user.username : '알 수 없음'}"></p>
+                    <p class="comment-content" th:utext="${comment.content}"></p>
+                    <p class="comment-date" th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+
+                    <!-- 댓글 수정, 삭제 -->
+                    <div class="comment-actions">
+                        <button type="button" class="edit-button"
+                                th:attr="onclick=|openEditCommentModal(${comment.id}, ${post.id})|">
+                            수정
+                        </button>
+                        <form th:action="@{/comments/{commentId}/delete(commentId=${comment.id})}" method="post">
+                            <input type="hidden" name="_method" value="delete" />
+                            <input type="hidden" name="postId" th:value="${post.id}" />
+                            <button type="button" class="delete-button"
+                                    th:attr="data-comment-id=${comment.id}">
+                                삭제
+                            </button>
+                        </form>
+                        <button type="button" class="reply-button" th:onclick="|toggleReplyForm(${comment.id})|">답글 작성</button>
+                    </div>
+
+                    <!-- 답글 작성 버튼 -->
+
+
+                    <!-- 댓글별 답글 작성 폼 -->
+                    <div class="comment-form-container" th:id="'reply-form-container-' + ${comment.id}" style="display: none;">
+                        <h3>답글 작성</h3>
+                        <form th:action="@{/comments/reply}" method="post">
+                            <input type="hidden" name="postId" th:value="${post.id}">
+                            <input type="hidden" name="parentCommentId" th:value="${comment.id}">
+                            <div>
+                                <label for="content-${comment.id}">답글 내용</label>
+                                <textarea id="content-${comment.id}" name="content" rows="4" cols="50" required></textarea>
+                            </div>
+                            <button type="submit">답글 작성 완료</button>
+                        </form>
+                    </div>
+
+                    <!-- 답글 리스트 -->
+                    <div class="reply-list" th:if="${comment.replies != null and !#lists.isEmpty(comment.replies)}">
+                        <ul>
+                            <li th:each="reply : ${comment.replies}" class="reply-item">
+                                <div class="reply-content">
+                                    <p class="comment-author" th:text="${reply.user != null && reply.user.username != null ? reply.user.username : '알 수 없음'}"></p>
+                                    <p class="comment-content" th:utext="${reply.content}"></p>
+                                    <p class="comment-date" th:text="${#temporals.format(reply.createdAt, 'yyyy-MM-dd HH:mm')}"></p>
+                                </div>
+
+                                <!-- 답글 삭제 버튼 -->
+                                <div class="reply-actions">
+                                    <button type="button"
+                                            class="edit-button2"
+                                            th:attr="data-reply-id=${reply.id}, data-reply-content=${reply.content}"
+                                            onclick="openEditReplyModal2(this)">
+                                        수정
+                                    </button>
+                                    <form th:action="@{/comments/reply/{replyId}/delete(replyId=${reply.id})}" method="post">
+                                        <!-- 댓글 삭제에 필요한 데이터 숨기기 -->
+                                        <input type="hidden" name="postId" th:value="${post.id}">
+                                        <input type="hidden" name="replyId" th:value="${reply.id}">
+
+                                        <button
+                                                type="submit"
+                                                class="delete-reply-button"
+                                                th:data-reply-id="${reply.id}"
+                                                th:data-current-user="${currentUser}"
+                                                th:data-reply-author="${reply.author}">
+                                            삭제
+                                        </button>
+                                    </form>
+                                </div>
+
+                                <div class="modal2" th:id="'edit-reply-modal2-' + ${reply.id}" style="display: none;">
+                                    <div class="modal-content2">
+                                        <span class="close-button2" th:onclick="|closeEditReplyModal2(${reply.id})|">&times;</span>
+                                        <h3>답글 수정</h3>
+                                        <form th:action="@{/comments/reply/{replyId}/edit(replyId=${reply.id})}" th:id="'edit-reply-form2-' + ${reply.id}" method="post">
+                                            <input type="hidden" name="postId" th:value="${post.id}">
+                                            <input type="hidden" name="replyId" th:value="${reply.id}">
+                                            <textarea name="content"
+                                                      th:id="'edit-reply-content2-' + ${reply.id}"
+                                                      required
+                                                      th:text="${reply.content}"></textarea>
+                                            <button type="button" class="save-reply-button2" th:onclick="'saveReply2(' + ${reply.id} + ')'">저장</button>
+                                            <button type="button" class="cancel-reply-button2" th:onclick="|closeEditReplyModal2(${reply.id})|">취소</button>
+                                        </form>
+                                    </div>
+                                </div>
+
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+
+
+        <!-- 댓글 작성 폼 (기존대로 유지) -->
+        <div class="comment-form-container" id="comment-form-container">
+            <h3>댓글 작성</h3>
+            <form th:action="@{/comments/add}" method="post">
+                <input type="hidden" name="id" th:value="${post.id}">
+                <input type="hidden" name="commentId" id="commentId">
+                <div>
+                    <label for="content"></label>
+                    <textarea id="content" name="content" rows="4" cols="50" required></textarea>
+                </div>
+                <button type="submit">작성 완료</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- 게시글 수정 모달 -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeEditModal()">&times;</span>
+        <h2>게시글 수정</h2>
+        <form th:action="@{/posts/{id}/edit(id=${post.id})}" method="post">
+            <div>
+                <label for="title">제목</label>
+                <input type="text" id="title" name="title" th:value="${post.title}" required />
+            </div>
+            <div>
+                <label for="editContent">내용</label>
+                <textarea id="editContent" name="content" rows="4" th:text="${post.content}"></textarea>
+            </div>
+            <button type="submit" class="submit-button">수정 완료</button>
+        </form>
+    </div>
+</div>
+
+<!-- 댓글 수정 모달 -->
+<div id="editCommentModal" class="modal2">
+    <div class="modal-dialog">
+        <div class="modal-content2">
+            <div class="modal-header">
+                <h5 class="modal-title">댓글 수정</h5>
+                <span class="close-button2" onclick="closeEditCommentModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <!-- Hidden inputs to store commentId and postId -->
+                <input type="hidden" id="edit-comment-id">
+                <input type="hidden" id="edit-post-id">
+                <textarea id="edit-comment-content" class="form-control"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="save-reply-button2" onclick="updateCommentAjax()">수정 완료</button>
+                <button type="button" class="cancel-reply-button2" onclick="closeEditCommentModal()">취소</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <title>회원 관리</title>
+</head>
+<body>
+<h1>회원 관리</h1>
+<ul>
+  <li th:each="user : ${users}" th:if="${user.role !='ROLE_MANAGER'}">
+    <span>ID: <span th:text="${user.id}"></span></span>,
+    <span>이메일: <span th:text="${user.email}"></span></span>,
+    <span>사용자명: <span th:text="${user.username}"></span></span>,
+    <span>역할: <span th:text="${user.role}"></span></span>,
+    <span>
+                <span th:if="${user.suspensionEndDate != null}"
+                      th:text="'정지됨 (' + ${#temporals.format(user.suspensionEndDate, 'yyyy-MM-dd')} + ' 까지)'"></span>
+                <span th:if="${user.suspensionEndDate == null}">활성</span>
+            </span>
+    <div>
+      <form th:action="@{/user/suspend/7days/{id}(id=${user.id})}" method="post" style="display:inline;">
+        <button type="submit">7일 정지</button>
+      </form>
+      <form th:action="@{/user/suspend/30days/{id}(id=${user.id})}" method="post" style="display:inline;">
+        <button type="submit">30일 정지</button>
+      </form>
+      <form th:action="@{/user/suspend/All/{id}(id=${user.id})}" method="post" style="display: inline;">
+        <button type="submit">영구정지</button>
+      </form>
+      <form th:action="@{/user/unsuspend/{id}(id=${user.id})}" method="post" style="display:inline;"
+            th:if="${user.suspensionEndDate != null}">
+        <button type="submit">정지 해제</button>
+      </form>
+    </div>
+  </li>
+</ul>
+<a th:href="@{/}">메인으로</a>
+</body>
+</html>

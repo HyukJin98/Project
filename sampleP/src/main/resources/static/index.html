@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>커뮤니티 웹사이트</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+<div class="container">
+    <!-- 왼쪽 사이드바 -->
+    <aside class="sidebar">
+        <h2>카페 홈</h2>
+        <nav>
+            <ul>
+                <li><a href="#">이웃</a></li>
+                <li><a href="#">구독</a><span class="count">57</span></li>
+                <li><a href="#">인기글</a></li>
+                <li><a href="#">내 소식</a></li>
+                <li><a href="#">채팅</a></li>
+            </ul>
+        </nav>
+        <div class="sub-menu">
+            <a href="#">주제별 카페</a>
+            <a href="#">지역별 카페</a>
+            <a href="#">인기 카페</a>
+            <a href="#">대표 카페</a>
+            <a href="#">카페 랭킹</a>
+        </div>
+    </aside>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <main class="main-content">
+        <h2>카페 홈</h2>
+        <div class="post-list">
+            <div class="post">
+                <h3>게시글 제목 1</h3>
+                <p>게시글 내용 요약...</p>
+                <span>작성자 | 13분 전</span>
+            </div>
+            <div class="post">
+                <h3>게시글 제목 2</h3>
+                <p>게시글 내용 요약...</p>
+                <span>작성자 | 1시간 전</span>
+            </div>
+            <!-- 추가 게시글 -->
+        </div>
+    </main>
+
+    <!-- 오른쪽 사이드 위젯 -->
+    <aside class="right-widget">
+        <div class="profile">
+            <h3>회원님</h3>
+            <p>보관함 | 쪽지 88</p>
+
+            <!-- 로그인 상태에 따라 버튼을 동적으로 표시 -->
+            <div sec:authorize="isAuthenticated()">
+                <button>로그아웃</button>
+                <button class="create-cafe">+ 카페 만들기</button>
+            </div>
+            <div sec:authorize="!isAuthenticated()">
+                <a href="/login" class="login-button">로그인</a>
+            </div>
+        </div>
+        <div class="notices">
+            <h4>공지사항</h4>
+            <ul>
+                <li><a href="#">공지사항 1</a></li>
+                <li><a href="#">공지사항 2</a></li>
+                <li><a href="#">공지사항 3</a></li>
+            </ul>
+        </div>
+    </aside>
+</div>
+</body>
+</html>
